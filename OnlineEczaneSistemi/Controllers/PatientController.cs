@@ -93,9 +93,38 @@ namespace OnlineEczaneSistemi.Controllers
             return View();
         }
         [Authorize(Roles="User")]
-        public async Task<IActionResult> OrderHistory() { 
-            return View();
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> OrderHistory()
+        {
+            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
+            var orders = await _context.Orders
+                .Where(o => o.UserId == userId)
+                .Include(o => o.Pharmacy)
+                .Include(o => o.Items)
+                .OrderByDescending(o => o.CreatedAt)
+                .ToListAsync();
+
+            return View(orders);
         }
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> OrderDetail(int id)
+        {
+            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+
+            var order = await _context.Orders
+                .Where(o => o.UserId == userId && o.OrderId == id)
+                .Include(o => o.Pharmacy)
+                .Include(o => o.Courier)
+                .Include(o => o.Items)
+                .FirstOrDefaultAsync();
+
+            if (order == null)
+                return RedirectToAction("OrderHistory");
+
+            return View(order);
+        }
+
+
     }
 }

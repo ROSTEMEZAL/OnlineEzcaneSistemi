@@ -27,11 +27,9 @@ else
                         <p><strong>Durum:</strong> @order.Status</p>
                         <p><strong>Toplam:</strong> @order.TotalPrice ₺</p>
 
-                        <button class="btn btn-outline-primary w-100"
-                                data-bs-toggle="modal"
-                                data-bs-target="#orderModal@order.OrderId">
+                        <a href="/Patient/OrderDetail/@order.OrderId" class="btn btn-outline-primary btn-sm">
                             Detay
-                        </button>
+                        </a>
                     </div>
 
                 </div>

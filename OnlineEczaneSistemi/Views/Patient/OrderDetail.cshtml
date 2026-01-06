@@ -1,0 +1,81 @@
+﻿@model OnlineEczaneSistemi.Models.Order
+
+<h2>Sipariş Detayı #@Model.OrderId</h2>
+<hr />
+
+<h4>Sipariş Bilgisi</h4>
+<p><strong>Tarih:</strong> @Model.CreatedAt.ToString("dd.MM.yyyy")</p>
+<p><strong>Durum:</strong> @Model.Status</p>
+
+@if (!string.IsNullOrEmpty(Model.PrescriptionUrl))
+{
+    <p>
+        <strong>Reçete:</strong>
+        <a href="@Model.PrescriptionUrl" target="_blank" class="btn btn-outline-primary btn-sm">
+            Reçeteyi Gör
+        </a>
+    </p>
+}
+
+<hr />
+
+<h4>Eczane Bilgisi</h4>
+@if (Model.Pharmacy != null)
+{
+    <p><strong>Ad:</strong> @Model.Pharmacy.FullName</p>
+    <p><strong>E-Posta:</strong> @Model.Pharmacy.Email</p>
+}
+else
+{
+    <p>Eczane bilgisi atanmadı.</p>
+}
+
+<hr />
+
+<h4>İlaç Listesi</h4>
+
+@if (Model.Items != null && Model.Items.Any())
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>İlaç</th>
+                <th>Adet</th>
+                <th>Birim Fiyat</th>
+                <th>Toplam</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Items)
+            {
+                <tr>
+                    <td>@item.MedicineName</td>
+                    <td>@item.Quantity</td>
+                    <td>@item.UnitPrice ₺</td>
+                    <td>@item.Total ₺</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p class="text-muted">Henüz eczane tarafından ilaç eklenmedi.</p>
+}
+
+<h4 class="mt-3">Toplam Fiyat: @Model.TotalPrice ₺</h4>
+
+<hr />
+
+<h4>Kurye Bilgisi</h4>
+@if (Model.Courier != null)
+{
+    <p><strong>Kurye:</strong> @Model.Courier.FullName</p>
+}
+else
+{
+    <p class="text-muted">Kurye henüz atanmadı.</p>
+}
+
+<br />
+<a href="/Patient/OrderHistory" class="btn btn-secondary">Geri Dön</a>

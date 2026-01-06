@@ -21,9 +21,7 @@ namespace OnlineEczaneSistemi.Controllers
             _env = env;
         }
 
-        // -------------------------------------------------------
-        // 📌 DASHBOARD
-        // -------------------------------------------------------
+    
         public async Task<IActionResult> Dashboard()
         {
             var model = new AdminDashboard
@@ -54,9 +52,6 @@ namespace OnlineEczaneSistemi.Controllers
             return View(model);
         }
 
-        // -------------------------------------------------------
-        // 📌 USERS LIST
-        // -------------------------------------------------------
         public async Task<IActionResult> Index(string search, string role, string status)
         {
             var query = _context.Users.AsQueryable();
@@ -88,9 +83,7 @@ namespace OnlineEczaneSistemi.Controllers
             return RedirectToAction("Index");
         }
 
-        // -------------------------------------------------------
-        // 📌 ROLE CHANGES
-        // -------------------------------------------------------
+
         public async Task<IActionResult> MakeAdmin(int id)
         {
             var user = await _context.Users.FindAsync(id);
@@ -113,9 +106,7 @@ namespace OnlineEczaneSistemi.Controllers
             return RedirectToAction("Index");
         }
 
-        // -------------------------------------------------------
-        // 📌 DETAIL & EDIT
-        // -------------------------------------------------------
+   
         public async Task<IActionResult> Details(int id)
         {
             var user = await _context.Users.FindAsync(id);
@@ -161,9 +152,6 @@ namespace OnlineEczaneSistemi.Controllers
             return RedirectToAction("Details", new { id = user.UserId });
         }
 
-        // -------------------------------------------------------
-        // 📌 ECZANE & KURYE REQUESTS
-        // -------------------------------------------------------
         public async Task<IActionResult> PharmacyRequests()
         {
             var list = await _context.PharmacyRegistrationRequests.OrderByDescending(x => x.CreatedAt).ToListAsync();
@@ -176,9 +164,7 @@ namespace OnlineEczaneSistemi.Controllers
             return View(list);
         }
 
-        // -------------------------------------------------------
-        // 📌 APPROVE PHARMACY
-        // -------------------------------------------------------
+
         public async Task<IActionResult> ApprovePharmacy(int id)
         {
             var req = await _context.PharmacyRegistrationRequests.FindAsync(id);
